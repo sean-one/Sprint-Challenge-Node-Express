@@ -10,9 +10,9 @@ server.use(express.json());
 server.get('/api/actions', async (req, res) => {
     try {
         const actions = await actionDb.get()
-        res.json({ actions })
+        res.status(200).json({ actions })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong'})
     }
 })
 
@@ -20,9 +20,9 @@ server.get('/api/actions/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const action = actionDb.get(id);
-        res.json({ action })
+        res.status(200).json({ action })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
