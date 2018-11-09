@@ -1,17 +1,10 @@
 const express = require('express');
 const projectDb = require('../data/helpers/projectModel.js');
+const projectCheck = require('../middleware/projectCheck.js');
 
 const router = express.Router();
 
 router.use(express.json());
-
-const projectCheck = (req, res, next) => {
-    if (!req.body.name || !req.body.description) {
-        res.status(400).json({ error: 'Please be sure to include all required information' })
-    } else {
-        next();
-    }
-}
 
 //entry '/api/projects'
 router.get('/', async (req, res) => {
