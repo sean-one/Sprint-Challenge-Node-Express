@@ -47,6 +47,20 @@ server.post('/api/actions/:id', async (req, res) => {
     }
 })
 
+server.delete('/api/actions/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const count = await actionDb.remove(id);
+        if (count === 0) {
+            res.json({ message: `An id of ${id} could not be found.`})
+        } else {
+            res.status(200).json({ message: `The element with the id of ${id} has been removed`})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 //projects
 server.get('/api/projects', async (req, res) => {
     try {
@@ -85,6 +99,20 @@ server.post('/api/projects/:id', async (req, res) => {
         res.json({ updated })
     } catch (error) {
         console.log(error)
+    }
+})
+
+server.delete('/api/projects/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const count = await projectDb.remove(id);
+        if (count === 0) {
+            res.json({ message: `An id of ${id} could not be found.` })
+        } else {
+            res.status(200).json({ message: `The element with the id of ${id} has been removed.`})
+        }
+    } catch (error) {
+        console.log(error);
     }
 })
 
