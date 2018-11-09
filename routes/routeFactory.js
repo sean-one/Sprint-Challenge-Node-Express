@@ -5,7 +5,6 @@ function routeFactory(db, middleware) {
     
     router.use(express.json());
     
-    //entry '/api/actions'
     router.get('/', async (req, res) => {
         try {
             const content = await db.get()
@@ -18,7 +17,7 @@ function routeFactory(db, middleware) {
     router.get('/:id', async (req, res) => {
         const id = req.params.id;
         try {
-            const content = db.get(id);
+            const content = await db.get(id);
             res.status(200).json({ content })
         } catch (error) {
             res.status(500).json({ error: 'Something went wrong' })
