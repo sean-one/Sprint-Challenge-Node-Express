@@ -26,6 +26,16 @@ server.get('/api/actions/:id', async (req, res) => {
     }
 })
 
+server.post('/api/actions', async (req, res) => {
+    const actionPost = req.body;
+    try {
+        const newPost = await actionDb.insert(actionPost);
+        res.json({ newPost })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 //projects
 server.get('/api/projects', async (req, res) => {
     try {
@@ -41,6 +51,16 @@ server.get('/api/projects/:id', async (req, res) => {
     try {
         const project = await projectDb.get(id);
         res.json({ project })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+server.post('/api/projects', async (req, res) => {
+    const projectPost = req.body;
+    try {
+        const newProject = await projectDb.insert(projectPost);
+        res.json({ newProject })
     } catch (error) {
         console.log(error)
     }
