@@ -29,10 +29,14 @@ server.get('/api/actions/:id', async (req, res) => {
 server.post('/api/actions', async (req, res) => {
     const actionPost = req.body;
     try {
-        const newPost = await actionDb.insert(actionPost);
-        res.json({ newPost })
+        if(!actionPost.project_id || !actionPost.description || !actionPost.notes) {
+            res.status(400).json({ error: 'Please be sure to include all required information' })
+        } else {
+            const newPost = await actionDb.insert(actionPost);
+            res.status(201).json({ newPost })
+        }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -94,8 +98,12 @@ server.get('/api/projects/:id/actions', async (req, res) => {
 server.post('/api/projects', async (req, res) => {
     const projectPost = req.body;
     try {
-        const newProject = await projectDb.insert(projectPost);
-        res.json({ newProject })
+        if (!projectPost.name || !projectPost.description) {
+            res.status(400).json({ error: 'Please be sure to include all required information' })
+        } else {
+            const newProject = await projectDb.insert(projectPost);
+            res.json({ newProject })
+        }
     } catch (error) {
         console.log(error)
     }
