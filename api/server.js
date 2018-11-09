@@ -45,9 +45,13 @@ server.post('/api/actions/:id', async (req, res) => {
     const changes = req.body;
     try {
         const updated = await actionDb.update(id, changes);
-        res.json({ updated })
+        if (updated === null) {
+            res.status(304).json({ error: `We could not find any content with the id ${id}.` })
+        } else {
+            res.status(202).json({ updated })
+        }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -56,12 +60,12 @@ server.delete('/api/actions/:id', async (req, res) => {
     try {
         const count = await actionDb.remove(id);
         if (count === 0) {
-            res.json({ message: `An id of ${id} could not be found.`})
+            res.status(404).json({ message: `There is no content with an id of ${id}.` })
         } else {
-            res.status(200).json({ message: `The element with the id of ${id} has been removed`})
+            res.status(200).json({ message: `The element with the id of ${id} has been removed.` })
         }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -69,9 +73,9 @@ server.delete('/api/actions/:id', async (req, res) => {
 server.get('/api/projects', async (req, res) => {
     try {
         const projects = await projectDb.get()
-        res.json({ projects })
+        res.status(200).json({ projects })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -79,9 +83,9 @@ server.get('/api/projects/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const project = await projectDb.get(id);
-        res.json({ project })
+        res.status(200).json({ project })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -102,10 +106,10 @@ server.post('/api/projects', async (req, res) => {
             res.status(400).json({ error: 'Please be sure to include all required information' })
         } else {
             const newProject = await projectDb.insert(projectPost);
-            res.json({ newProject })
+            res.status(201).json({ newProject })
         }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -114,9 +118,13 @@ server.post('/api/projects/:id', async (req, res) => {
     const changes = req.body;
     try {
         const updated = await projectDb.update(id, changes);
-        res.json({ updated })
+        if (updated === null) {
+            res.status(304).json({ error: `We could not find any content with the id ${id}.` })
+        } else {
+            res.status(202).json({ updated })
+        }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
@@ -125,12 +133,12 @@ server.delete('/api/projects/:id', async (req, res) => {
     try {
         const count = await projectDb.remove(id);
         if (count === 0) {
-            res.json({ message: `An id of ${id} could not be found.` })
+            res.status(404).json({ message: `There is no content with an id of ${id}.` })
         } else {
             res.status(200).json({ message: `The element with the id of ${id} has been removed.`})
         }
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: 'Something went wrong' })
     }
 })
 
