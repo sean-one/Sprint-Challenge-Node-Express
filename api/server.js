@@ -36,6 +36,17 @@ server.post('/api/actions', async (req, res) => {
     }
 })
 
+server.post('/api/actions/:id', async (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+    try {
+        const updated = await actionDb.update(id, changes);
+        res.json({ updated })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 //projects
 server.get('/api/projects', async (req, res) => {
     try {
@@ -61,6 +72,17 @@ server.post('/api/projects', async (req, res) => {
     try {
         const newProject = await projectDb.insert(projectPost);
         res.json({ newProject })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+server.post('/api/projects/:id', async (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+    try {
+        const updated = await projectDb.update(id, changes);
+        res.json({ updated })
     } catch (error) {
         console.log(error)
     }
