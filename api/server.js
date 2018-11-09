@@ -81,6 +81,16 @@ server.get('/api/projects/:id', async (req, res) => {
     }
 })
 
+server.get('/api/projects/:id/actions', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const actions = projectDb.getProjectActions(id);
+        res.json({ actions })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 server.post('/api/projects', async (req, res) => {
     const projectPost = req.body;
     try {
