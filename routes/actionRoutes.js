@@ -1,17 +1,10 @@
 const express = require('express')
 const actionDb = require('../data/helpers/actionModel.js');
+const actionCheck = require('../middleware/actionCheck.js');
 
 const router = express.Router();
 
 router.use(express.json());
-
-const actionCheck = (req, res, next) => {
-    if (!req.body.project_id || !req.body.description || !req.body.notes) {
-        res.status(400).json({ error: 'Please be sure to include all required information' })
-    } else {
-        next()
-    }
-}
 
 //entry '/api/actions'
 router.get('/', async (req, res) => {
