@@ -5,6 +5,14 @@ const router = express.Router();
 
 router.use(express.json());
 
+const actionCheck = (req, res, next) => {
+    if (!req.body.project_id || !req.body.description || !req.body.notes) {
+        res.status(400).json({ error: 'Please be sure to include all required information' })
+    } else {
+        next()
+    }
+}
+
 //entry '/api/actions'
 router.get('/', async (req, res) => {
     try {
@@ -25,15 +33,11 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', actionCheck, async (req, res) => {
     const actionPost = req.body;
     try {
-        if (!actionPost.project_id || !actionPost.description || !actionPost.notes) {
-            res.status(400).json({ error: 'Please be sure to include all required information' })
-        } else {
-            const newPost = await actionDb.insert(actionPost);
-            res.status(201).json({ newPost })
-        }
+        const newPost = await actionDb.insert(actionPost);
+        res.status(201).json({ newPost })
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' })
     }
